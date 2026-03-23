@@ -11,6 +11,6 @@ import com.software.emp_laptop.models.Laptop;
 public interface LaptopRepository extends JpaRepository<Laptop, String>{
 	
 	
-	@Query("SELECT l FROM Laptop l WHERE l.employee.id = :id")
+	@Query("SELECT l FROM Laptop l WHERE l.employee.emp_id = :id")
     public Laptop getLaptopByEmpId(@Param("id") String id);
 }
