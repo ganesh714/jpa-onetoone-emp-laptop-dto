@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.software.emp_laptop.dto.EmployeeDto;
 import com.software.emp_laptop.models.Employee;
 import com.software.emp_laptop.models.Laptop;
 import com.software.emp_laptop.service.EmployeeService;
@@ -25,24 +26,24 @@ public class EmployeeController {
 	EmployeeService employeeService;
 	
 	@PostMapping("employee")
-	public boolean addEmployee(@RequestBody Employee employee) {
-		return employeeService.addEmployee(employee);
+	public boolean addEmployee(@RequestBody EmployeeDto employeeDto) {
+		return employeeService.addEmployee(employeeDto);
 	}
 	
 	@GetMapping("/employees")
-	public List<Employee> getAllEmployees() {
+	public List<EmployeeDto> getAllEmployees() {
         return employeeService.getAllEmployees();
     }
 	
 	 @GetMapping("/employee/{id}")
-	public Employee getEmployeeById(@PathVariable String id) {
+	public EmployeeDto getEmployeeById(@PathVariable String id) {
 		return employeeService.getEmployeeById(id);
 	}
 
 	@PutMapping("/employee/{id}")
-	public Employee updateEmployee(@PathVariable String id,
-									@RequestBody Employee employee) {
-		return employeeService.updateEmployee(id, employee);
+	public EmployeeDto updateEmployee(@PathVariable String id,
+									@RequestBody EmployeeDto employeeDto) {
+		return employeeService.updateEmployee(id, employeeDto);
 	}
 
 	@DeleteMapping("/employee/{id}")

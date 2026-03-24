@@ -5,6 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.software.emp_laptop.dto.EmployeeDto;
+import com.software.emp_laptop.dto.LaptopDto;
+import com.software.emp_laptop.mapper.EmployeeMapper;
+import com.software.emp_laptop.mapper.LaptopMapper;
 import com.software.emp_laptop.models.Employee;
 import com.software.emp_laptop.models.Laptop;
 import com.software.emp_laptop.repository.LaptopRepository;
@@ -16,38 +20,44 @@ public class LaptopService {
 	LaptopRepository laptopRepository;
 	@Autowired
 	EmployeeService employeeService;
+	@Autowired
+	LaptopMapper laptopMapper;
+	@Autowired
+	EmployeeMapper employeeMapper;
 
-	public boolean addLaptop(Laptop laptop) {
-		if (isLaptopPresent(laptop.getLap_id())) {
+	public boolean addLaptop(LaptopDto laptopDto) {
+		if (isLaptopPresent(laptopDto.getLap_id())) {
 			return false;
 		}
-		laptopRepository.save(laptop);
+		laptopRepository.save(laptopMapper.toLaptop(laptopDto));
 		return true;
 	}
 	
-	public List<Laptop> getAllLaptops(){
-		return laptopRepository.findAll();
+	public List<LaptopDto> getAllLaptops(){
+		return laptopMapper.toLaptopDtos(laptopRepository.findAll());
 	}
 	
-	public Laptop getLaptopById(String id) {
-		return laptopRepository.findById(id).orElse(null);
+	public LaptopDto getLaptopById(String id) {
+		return laptopMapper.toLaptopDto(laptopRepository.findById(id).orElse(null));
 	}
 	
-	public Laptop updateLaptop(String id, Laptop laptop) {
+	
+	public LaptopDto updateLaptop(String id, LaptopDto laptopDto) {
 		if (isLaptopPresent(id)) {
-	        Laptop existing = getLaptopById(id);
+	        LaptopDto existing = getLaptopById(id);
 	        
-	        if (laptop.getLap_name() != null) {
-	            existing.setLap_name(laptop.getLap_name());
+	        if (laptopDto.getLap_name() != null) {
+	            existing.setLap_name(laptopDto.getLap_name());
 	        }
-	        if (laptop.getLap_model() != null) {
-	            existing.setLap_model(laptop.getLap_model());
+	        if (laptopDto.getLap_model() != null) {
+	            existing.setLap_model(laptopDto.getLap_model());
 	        }
-	        if (laptop.getLap_warranty() != null) {
-	            existing.setLap_warranty(laptop.getLap_warranty());
+	        if (laptopDto.getLap_warranty() != null) {
+	            existing.setLap_warranty(laptopDto.getLap_warranty());
 	        }
 	        
-	        return laptopRepository.save(existing);
+	        Laptop updatedLaptop = laptopRepository.save(laptopMapper.toLaptop(existing));
+	        return laptopMapper.toLaptopDto(updatedLaptop);
 	    }
 		
 		return null;
@@ -61,14 +71,16 @@ public class LaptopService {
 	    return "Laptop not found!";
 	}
 	
-	public Laptop assignLaptopToEmployee(String lap_id, String emp_id) { //assignLaptopToEmployee
-		Laptop laptop= getLaptopById(lap_id);
-		laptop.setEmployee(employeeService.getEmployeeById(emp_id));
-		return laptopRepository.save(laptop);
+	public LaptopDto assignLaptopToEmployee(String lap_id, String emp_id) { //assignLaptopToEmployee
+		LaptopDto laptopDto= getLaptopById(lap_id);
+		EmployeeDto employeeDto = employeeService.getEmployeeById(emp_id);
+		laptopDto.setEmployee(employeeMapper.toEmployee(employeeDto));
+		Laptop savedLaptop =  laptopRepository.save(laptopMapper.toLaptop(laptopDto));
+		return laptopMapper.toLaptopDto(savedLaptop);
 	}
 	
-	public Laptop getLaptopByEmpId(String id) {
-		return laptopRepository.getLaptopByEmpId(id);
+	public LaptopDto getLaptopByEmpId(String id) {
+		return laptopMapper.toLaptopDto(laptopRepository.getLaptopByEmpId(id));
 	}
 	
 	public boolean isLaptopPresent(String id) {
