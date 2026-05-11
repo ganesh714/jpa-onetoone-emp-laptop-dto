@@ -34,7 +34,7 @@ public class LaptopMapper {
 		laptopDto.setLap_model(laptop.getLap_model());
 		laptopDto.setLap_warranty(laptop.getLap_warranty());
 		laptopDto.setEmployee(laptop.getEmployee());
-		
+		laptopDto.setEmployName(laptop.getEmployee().getEmp_name());
 		return laptopDto;
 	}
 	

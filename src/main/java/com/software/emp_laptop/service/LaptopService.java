@@ -2,6 +2,9 @@ package com.software.emp_laptop.service;
 
 import java.util.List;
 
+import com.software.emp_laptop.mapper.LapMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +24,22 @@ public class LaptopService {
 	@Autowired
 	EmployeeService employeeService;
 	@Autowired
-	LaptopMapper laptopMapper;
+    LapMapper laptopMapper;
 	@Autowired
 	EmployeeMapper employeeMapper;
 
+	Logger logger = LoggerFactory.getLogger(LaptopService.class);
+
 	public boolean addLaptop(LaptopDto laptopDto) {
+
+		logger.info("new laptop ready to add " + laptopDto);
+
 		if (isLaptopPresent(laptopDto.getLap_id())) {
+			logger.info("Laptop already exists so unable to add laptop" + laptopDto.getLap_id());
 			return false;
 		}
+
+		logger.info("Adding laptop " + laptopDto.getLap_id());
 		laptopRepository.save(laptopMapper.toLaptop(laptopDto));
 		return true;
 	}

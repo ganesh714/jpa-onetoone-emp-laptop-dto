@@ -9,5 +9,6 @@ public class LaptopDto {
 	private String lap_name;
 	private String lap_model;
 	private String lap_warranty;
+	private String employName;
 	private Employee employee;
 }

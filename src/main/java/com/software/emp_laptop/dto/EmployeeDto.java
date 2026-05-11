@@ -10,4 +10,5 @@ public class EmployeeDto {
 	private String emp_name;
 	private int emp_salary;
 	private LocalDate emp_joing_date;
+	private String laptop_Id;
 }

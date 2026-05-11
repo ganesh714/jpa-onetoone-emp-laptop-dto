@@ -2,6 +2,7 @@ package com.software.emp_laptop.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +22,8 @@ import com.software.emp_laptop.service.LaptopService;
 @CrossOrigin("*")
 @RestController
 public class LaptopController {
-	
+
+
 	@Autowired
 	LaptopService laptopService;
 	
